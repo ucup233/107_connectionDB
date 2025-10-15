@@ -10,6 +10,14 @@ app.get('/', (req, res) => {
     });
 
 
+app.get('/mahasiswa', (req, res) => {
+    const sql = 'SELECT * FROM mahasiswa';
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+
 const db = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
