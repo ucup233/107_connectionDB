@@ -28,6 +28,20 @@ app.get('/mahasiswa/:id', (req, res) => {
     });
 });
 
+app.post('/mahasiswa', (req, res) => {
+    const { Nama, Alamat, Agama } = req.body;
+    if (!Nama || !Alamat || !Agama) {
+        return res.status(400).json({ error: 'Field "Nama, Alamat, dan Agama" are required' });
+    }
+
+    const sql = 'INSERT INTO mahasiswa (Nama, Alamat, Agama) VALUES (?, ?, ?)';
+    db.query(sql, [Nama, Alamat, Agama || null], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ id: result.insertId, Nama, Alamat, Agama});
+    });
+});
+
+
 const db = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
